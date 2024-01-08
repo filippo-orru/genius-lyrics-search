@@ -32,13 +32,29 @@ Queries & training data:
 
 ![Pipeline](pipeline-diagram.png)
 
-1. Retrieval: **TF-IDF**
-2. Re-ranking: **monoBERT** and **word2vec**  
-Word2vec was not fully implemented.
+1. Retrieval: **TF-IDF** (top 100 results)
+2. Re-ranking: **monoBERT** and **word2vec** (top 10 results) 
+Please note that word2vec was not fully implemented in time for the deadline.
 3. Evaluation: **MRR**, **Hitrate@k**, **Precision@k**
 
 ## Results
 
-In our limited testing, the model did not perform that well.
+In our limited testing, the model did not perform _that_ well.
 Since the word2vec implementation wasn't finished in time for the deadline, we only used monoBERT for re-ranking and could not compare it to the other re-ranker.
 
+When testing the performance using 300 queries, we got the following results:
+- Mean hitrate@10: 40.00% 
+- Mean MRR: 0.2505 
+- Mean Precision@10: 4.00% (to be expected, since it's the same as hitrate@10 divided by 10)
+
+When testing TF-IDF on 10,000 queries without re-ranking, we got the following results:
+
+| Mean hitrate |  Value |
+|----:|-------:|
+|  @1 |  5.47% |
+| @10 | 14.93% |
+| @50 | 27.00% |
+| @100 | 34.27% |
+| @500 | 53.24% |
+
+This indicates that the re-ranker monoBERT performs rather well, given that many relevant documents aren't retrieved by TF-IDF in the first place. It manages to return the correct document in the top 10 results in 40% of the cases, on average even in the top 4 results.
